@@ -30,9 +30,12 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Grid Grid.Column="1">
-            
-            <TextBox Text="{Binding SelectedTask.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <CheckBox IsChecked="{Binding SelectedTask.IsComplete}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Text="{Binding SelectedTask.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <CheckBox Grid.Column="1" IsChecked="{Binding SelectedTask.IsComplete}"/>
         </Grid>
     </Grid>
 </Window>
