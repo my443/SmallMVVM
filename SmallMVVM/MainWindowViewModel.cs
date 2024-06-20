@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SmallMVVM
 {
@@ -14,6 +15,8 @@ namespace SmallMVVM
         private string _iscomplete { get; set; }
 
         private Task _selectedTask { get; set; }
+        public ICommand AddTaskCommand { get; }
+        public ICommand DeleteTaskCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -32,6 +35,9 @@ namespace SmallMVVM
                     Name = "Description 3",
                     IsComplete = true },
             };
+
+            AddTaskCommand = new RelayCommand(AddTask);
+            DeleteTaskCommand = new RelayCommand(DeleteTask, CanDeleteTask);
         }
 
         public Task SelectedTask
@@ -73,6 +79,30 @@ namespace SmallMVVM
                     OnPropertyChanged("IsComplete");
                 }
             }
+        }
+
+        private void AddTask(object parameter)
+        {
+            var newTask = new Task
+            {
+                Id = Tasks.Count > 0 ? Tasks[Tasks.Count - 1].Id + 1 : 1,
+                Name = "New Task",
+                IsComplete = false
+            };
+            Tasks.Add(newTask);
+        }
+
+        private void DeleteTask(object parameter)
+        {
+            if (SelectedTask != null)
+            {
+                Tasks.Remove(SelectedTask);
+            }
+        }
+
+        private bool CanDeleteTask(object parameter)
+        {
+            return SelectedTask != null;
         }
 
     }

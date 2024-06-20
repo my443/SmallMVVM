@@ -17,8 +17,20 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <ListBox x:Name="TaskListBox" Grid.Column="0" 
+        <StackPanel Grid.Row="0" Orientation="Horizontal"
+                    Grid.ColumnSpan="2">
+            <Button Command="{Binding AddTaskCommand}">
+                <TextBlock>Add</TextBlock>
+            </Button>
+            <Button Command="{Binding DeleteTaskCommand}">
+                <TextBlock>
+                    Delete
+                </TextBlock>
+            </Button>
+        </StackPanel>
+        <ListBox x:Name="TaskListBox" 
+                 Grid.Column="0"
+                 Grid.Row="1"
                  ItemsSource="{Binding Tasks}"
                  SelectedItem="{Binding SelectedTask}">
             <ListBox.ItemTemplate>
@@ -30,7 +42,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Grid Grid.Column="1">
+        <Grid Grid.Row="1"
+            Grid.Column="1">
             <usercontrols:TaskEntry></usercontrols:TaskEntry>
         </Grid>
     </Grid>
