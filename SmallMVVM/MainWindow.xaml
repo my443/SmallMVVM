@@ -17,31 +17,12 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal"
-                    Grid.ColumnSpan="2">
-            <Button Command="{Binding AddTaskCommand}">
-                <TextBlock>Add</TextBlock>
-            </Button>
-            <Button Command="{Binding DeleteTaskCommand}">
-                <TextBlock>
-                    Delete
-                </TextBlock>
-            </Button>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2">
+            <usercontrols:Buttons></usercontrols:Buttons>
         </StackPanel>
-        <ListBox x:Name="TaskListBox" 
-                 Grid.Column="0"
-                 Grid.Row="1"
-                 ItemsSource="{Binding Tasks}"
-                 SelectedItem="{Binding SelectedTask}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                        <CheckBox IsChecked="{Binding IsComplete}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid Grid.Column="0" Grid.Row="1">
+            <usercontrols:ListboxUserControl></usercontrols:ListboxUserControl>
+        </Grid>
         <Grid Grid.Row="1"
             Grid.Column="1">
             <usercontrols:TaskEntry></usercontrols:TaskEntry>
