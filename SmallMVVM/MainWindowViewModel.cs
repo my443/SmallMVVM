@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace SmallMVVM
@@ -13,10 +15,14 @@ namespace SmallMVVM
         public ObservableCollection<Task> Tasks { get; set; }
         private string _name { get; set; }
         private string _iscomplete { get; set; }
+        private bool _showOnlyCompleted;
+        private ICollectionView _tasksView;
 
         private Task _selectedTask { get; set; }
         public ICommand AddTaskCommand { get; }
         public ICommand DeleteTaskCommand { get; }
+        public ICommand ToggleFilterCommand { get; }
+        public ICollectionView TasksView => _tasksView;
 
         public MainWindowViewModel()
         {
@@ -36,8 +42,12 @@ namespace SmallMVVM
                     IsComplete = true },
             };
 
+            _tasksView = CollectionViewSource.GetDefaultView(Tasks);
+            _tasksView.Filter = TaskFilter;
+
             AddTaskCommand = new RelayCommand(AddTask);
             DeleteTaskCommand = new RelayCommand(DeleteTask, CanDeleteTask);
+            ToggleFilterCommand = new RelayCommand(ToggleFilter);
         }
 
         public Task SelectedTask
@@ -100,9 +110,33 @@ namespace SmallMVVM
             }
         }
 
+        public bool ShowOnlyCompleted
+        {
+            get => _showOnlyCompleted;
+            set
+            {
+                _showOnlyCompleted = value;
+                OnPropertyChanged("ShowOnlyCompleted");
+                _tasksView.Refresh();
+            }
+        }
         private bool CanDeleteTask(object parameter)
         {
             return SelectedTask != null;
+        }
+
+        private void ToggleFilter(object parameter)
+        {
+            ShowOnlyCompleted = !ShowOnlyCompleted;
+        }
+
+        private bool TaskFilter(object obj)
+        {
+            if (obj is Task task)
+            {
+                return !ShowOnlyCompleted || !task.IsComplete;
+            }
+            return true;
         }
 
     }

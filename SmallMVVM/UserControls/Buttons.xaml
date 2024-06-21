@@ -16,6 +16,11 @@
                     Delete
                 </TextBlock>
             </Button>
+            <Button Command="{Binding ToggleFilterCommand}">
+                <TextBlock>
+                    Filter_Toggle
+                </TextBlock>
+            </Button>            
         </StackPanel>
     </Grid>
 </UserControl>
